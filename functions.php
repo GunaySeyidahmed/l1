@@ -1,5 +1,7 @@
 <?php
 
+require 'connection.php';
+global $pdo;
 function selectWithArray()
 {
     global $pdo;
@@ -11,13 +13,19 @@ function selectWithArray()
     return $users;
 }
 
-function insertUser($name, $password, $phone)
+function insertUser($username, $password, $phone)
 {
     global $pdo;
-    $sql = "insert into user (`username`,`password`,`phone`) VALUES ('" . $name . "','" . $password . "','" . $phone . "')";
-    $stmt= $pdo->prepare($sql);
-    $stmt->execute([$name, $password, $phone]);
 
+    $data = [
+        'username' => $username,
+        'password' => $password,
+        'phone' => $phone,
+    ];
+
+    $stmt= $pdo->prepare("INSERT INTO user (username, password,  phone) VALUES (:username, :password, :phone)");
+    $stmt->execute($data);
+    return true;
 }
 
 function delete($id)

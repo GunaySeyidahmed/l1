@@ -1,5 +1,6 @@
 <?php
 
+require 'connection.php';
 global $pdo;
 require 'functions.php';
 
@@ -25,17 +26,20 @@ require 'functions.php';
 <body>
 <div class="container">
     <?php
+
+
     $name = isset($_POST['username']) ? $_POST['username']: '';
     $password =isset( $_POST['password']) ? ( $_POST['password']) : '';
     $phone =isset( $_POST['phone']) ? ( $_POST['phone']) : '';
 
         if (!empty($name) && !empty($password) && !empty($phone)) {
             $inserted = insertUser($name,$password,$phone);
+            echo "inserted  ".$inserted;
             if($inserted){
                 echo "Kontakt ugurla əlavə edildi";
                  header("Location: contacts.php");
             }else{
-                echo "Qeydiyyat zamani yanlisl";
+                echo "Qeydiyyat zamani yanlisliq bas verdi";
             }
         }
     ?>

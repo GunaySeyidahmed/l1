@@ -1,9 +1,9 @@
 <?php
 require 'connection.php';
 require 'functions.php';
-
 error_reporting(-1);
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,34 +24,31 @@ error_reporting(-1);
 <body>
 <div class="container">
     <?php
-    $username = isset($_POST['username']) ? $_POST['username'] : '';
-    $password = isset($_POST['password']) ? ($_POST['password']) : '';
+        $username = isset($_POST['username']) ? $_POST['username'] : '';
+        $password = isset($_POST['password']) ? $_POST['password'] : '';
 
-    /*if (isset($_COOKIE['username'])) {
-        header('Location: contacts.php');;
-    }*/
-
-    if (!empty($username) && !empty($password)) {
-        $checkResult = checkUser($username, $password);
-
-        if ($checkResult) {
-            if (!empty($_POST["remember"])) {
-                setcookie('username',$username, time() + 3600*24*7);
-                setcookie('password',$password, time() + 3600*24*7);
-                echo "Cookies Set Successfuly";
-            } else {
-                setcookie("username", "");
-                setcookie("password", "");
-                echo "Cookies Not Set";
-            }
-            header('Location: contacts.php');
-        } else {
-            echo "<div class=\"alert alert-danger mx-auto position-absolute\" role=\"alert\" style=\"width: 30%;bottom: 200px;left: 50%; transform: translateX(-50%)\">
-                Istifadeci adi veya parol yanlisdir.
-            </div>";
+        if (isset($_COOKIE['username']) && isset($_COOKIE['password'])) {
+            header('Location: contacts.php');;
         }
-    }
 
+        if (!empty($username) && !empty($password)) {
+            $checkResult = checkUser($username, $password);
+            if ($checkResult) {
+                if (!empty($_POST["remember"])) {
+                    setcookie('username',$username, time() + 3600*24*7);
+                    setcookie('password',$password, time() + 3600*24*7);
+                    echo "Cookies Set Successfuly";
+                } else {
+                    setcookie("username", "");
+                    setcookie("password", "");
+                    echo "Cookies Not Set";
+                }
+                header('Location: contacts.php');
+            } else {
+                echo "<div class=\"alert alert-danger mx-auto position-absolute\" role=\"alert\" style=\"width: 30%;bottom: 0px;left: 50%; transform: translateX(-50%)\">
+                    Istifadeci adi veya parol yanlisdir. </div>";
+            }
+        }
 
     ?>
     <div class="col-md-6 position-center">
@@ -59,15 +56,11 @@ error_reporting(-1);
         <form action="index.php" method="POST">
             <div class="form-group">
                 <label>Username</label>
-                <input type="text" class="form-control" name="username" placeholder="username" required="required"
-                       value="">
+                <input type="text" class="form-control" name="username" placeholder="username" required="required">
             </div>
             <div class="form-group">
                 <label>Password</label>
-                <input type="password" class="form-control" name="password" placeholder="password" required="required"
-                       value="<?php if (isset($_COOKIE["password"])) {
-                           echo $_COOKIE["password"];
-                       } ?>">
+                <input type="password" class="form-control" name="password" placeholder="password" required="required">
             </div>
             <div class="form-check">
                 <input type="checkbox" class="form-check-input" id="exampleCheck1" name="remember">
@@ -80,7 +73,6 @@ error_reporting(-1);
         </form>
     </div>
 </div>
-
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
@@ -90,6 +82,5 @@ error_reporting(-1);
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
         integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
         crossorigin="anonymous"></script>
-
 </body>
 </html>
