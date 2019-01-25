@@ -1,46 +1,21 @@
 <?php
 
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname="mydb";
+$servername = "85.132.53.156";
+$username = "gunay_test";
+$password = "test123";
+$dbname = "gunay_test";
+$charset = 'utf8mb4';
 
-$conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-} 
 
-function insert($name,$surname,$age,$salary){
-	global $conn;
-	$sql = "INSERT INTO test1 (name, surname, age,salary) VALUES ($name, $surname, $age, $salary)";
+$dsn = "mysql:host=$servername;dbname=$dbname;charset=$charset";
 
-	if ($conn->query($sql) === TRUE) {
-	    echo "New record created successfully";
-	} else {
-	    echo "Error: " . $sql . "<br>" . $conn->error;
-	}
+$options = [
+    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    PDO::ATTR_EMULATE_PREPARES => false,
+];
+try {
+    $pdo = new PDO($dsn, $username, $password, $options);
+} catch (\PDOException $e) {
+    throw new \PDOException($e->getMessage(), (int)$e->getCode());
 }
-
-function select(){
-	global $conn;
-	$sql = "SELECT name, surname, age FROM test1";
-	$result = $conn->query($sql);
-
-	if ($result->num_rows > 0) {
-	    // output data of each row
-	    while($row = $result->fetch_assoc()) {
-	        echo "name: " . $row["name"]. " - surname: " . $row["surname"]. " " . $row["age"]. "<br>";
-	    }
-	} else {
-	    echo "0 results";
-	}
-}
-
-select();
-insert("Gunay1","Memmedova1",12,22);
-
-$conn->close();
-
-
-?>
